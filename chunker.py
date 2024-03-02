@@ -1,13 +1,24 @@
 from langchain.text_splitter import HTMLHeaderTextSplitter
 
-headers_to_split_on = [
-    ("h1", "Header 1"),
-    ("h2", "Header 2"),
-]
 
-html_splitter = HTMLHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
-html_header_splits = html_splitter.split_text_from_file("/Users/aaliyamanji/anthropic/assessment-tool/output.html")
+def get_list_of_string(doc_list):
+    return [doc.page_content for doc in doc_list]
 
-# Print the splits
-for i, split in enumerate(html_header_splits, 1):
-    print(f"Split {i}:\n{split}\n{'-'*40}")
+
+class HTMLHeaderSplitter:
+    def __init__(self, headers_to_split_on):
+
+        self.headers_to_split_on = headers_to_split_on
+        self.html_splitter = HTMLHeaderTextSplitter(
+            headers_to_split_on=self.headers_to_split_on)
+
+    def split_text_from_file(self, file_path):
+
+        return self.html_splitter.split_text_from_file(file_path)
+
+    def print_splits(self, file_path):
+
+        html_header_splits = self.split_text_from_file(file_path)
+        for i, split in enumerate(html_header_splits, 1):
+            print(f"Split {i}:\n{split}\n{'-' * 40}")
+
